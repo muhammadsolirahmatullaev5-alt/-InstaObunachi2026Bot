@@ -1,1 +1,28 @@
+import os
+import telebot
+from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
+TOKEN = os.getenv("BOT_TOKEN")
+
+bot = telebot.TeleBot(TOKEN)
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(KeyboardButton("👤 Profil"))
+    keyboard.add(KeyboardButton("ℹ️ Yordam"))
+
+    bot.send_message(
+        message.chat.id,
+        "Assalomu alaykum! InstaObunachi2026Bot xizmatiga xush kelibsiz!",
+        reply_markup=keyboard
+    )
+
+@bot.message_handler(func=lambda message: True)
+def menu(message):
+    if message.text == "👤 Profil":
+        bot.reply_to(message, "Sizning profilingiz.")
+    elif message.text == "ℹ️ Yordam":
+        bot.reply_to(message, "Yordam uchun administratorga murojaat qiling.")
+
+bot.infinity_polling()
